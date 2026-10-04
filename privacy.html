@@ -20,9 +20,7 @@
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/img/icon-192.png">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/style.css">
   <script>try{var t=localStorage.getItem("hac-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 </head>
@@ -40,7 +38,7 @@
         <li><a href="services.html">Services</a></li>
         <li><a href="how-we-work.html">How we work</a></li>
         <li><a href="team.html">About us</a></li>
-        <li><a href="pricing.html">Plans</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
       <div class="nav-actions">
@@ -74,14 +72,22 @@
         <h2>3. Who we share it with</h2>
         <p>Only with providers needed for your request (for example a clinic, store, courier or tradesperson) and only what they need — or where the law requires.</p>
         <h2>4. Tools we use</h2>
-        <p>We use common services such as WhatsApp, Gmail/Google tools, Cloudflare (to run our chat assistant and keep a private log of enquiries) and AI assistants. We minimise what we put into them and never enter OTPs, passwords, bank/card numbers or medical records into AI tools. When you send the contact form or message us on WhatsApp, your name, number and message are saved in our private enquiry log so we can reply; log entries are deleted automatically after 12 months. Questions typed into the chat assistant are processed to generate an answer and are not stored with your identity. This website does not use tracking cookies.</p>
-        <h2>5. How long we keep it</h2>
+        <p>We use common services such as WhatsApp, Gmail/Google tools, Cloudflare (to run our chat assistant and keep a private log of enquiries) and AI assistants. We minimise what we put into them and never enter OTPs, passwords, bank/card numbers or medical records into AI tools. When you send the contact form or message us on WhatsApp, your name, number and message are saved in our private enquiry log so we can reply; log entries are deleted automatically after 12 months. Questions typed into the chat assistant are processed to generate an answer and are not stored with your identity.</p>
+        <h2>5. Cookies &amp; local storage</h2>
+        <p>This website does <b>not</b> use advertising or tracking cookies, analytics or social-media pixels, so there is no cookie banner. It only stores a few small settings in your own browser (only your light/dark theme choice) so the site works the way you left it; these never leave your device and you can clear them from your browser settings at any time. Our fonts and images are served from our own website. The map on our contact page is provided by Google and only loads if you click <i>Show map</i> — Google may then set its own cookies under <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's privacy policy</a>.</p>
+        <h2>6. How long we keep it</h2>
         <p>Only as long as needed for the service and legal requirements (for example invoices). Client profiles are deleted within 12 months after you stop using our services, or sooner on request.</p>
-        <h2>6. Your rights</h2>
-        <p>You can ask to access, correct or delete your data, or withdraw consent, at any time by contacting us. Withdrawing consent may mean we can't continue a service.</p>
-        <h2>7. Security</h2>
+        <h2>7. Your rights</h2>
+        <p>You can ask to access, correct or delete your data, or withdraw consent, at any time. Withdrawing consent may mean we can't continue a service.</p>
+        <h2 id="delete">8. How to delete your data</h2>
+        <p>Send <b>"Delete my data"</b> with your name and phone number on WhatsApp <a href="https://wa.me/919449230088?text=Delete%20my%20data.%20Name%3A%20" target="_blank" rel="noopener">+91 94492 30088</a> or by email to <a href="mailto:humanai.concierges@gmail.com?subject=Delete%20my%20data">humanai.concierges@gmail.com</a>. We confirm within 7 working days and delete your enquiries, client profile and messages we hold, except records the law requires us to keep (such as tax invoices), which are kept only for the legal period. The same applies to our phone app, which is simply this website and stores no extra data.</p>
+        <h2>9. Messages &amp; opting out</h2>
+        <p>We only message you about requests you started. We do not send marketing emails or bulk WhatsApp messages without your permission. If you ever get an update you don't want, reply <b>STOP</b> and we will stop.</p>
+        <h2>10. Children</h2>
+        <p>Our services and this website are for adults (18+). We don't knowingly collect data from children. Where a service involves a child (for example a school event under <i>Be There</i>), we act only on the instructions of the parent or guardian and collect the minimum needed.</p>
+        <h2>11. Security</h2>
         <p>We use two-step verification, a password manager and least-privilege access, and limit who can see client information.</p>
-        <h2>8. Grievances &amp; contact</h2>
+        <h2>12. Grievances &amp; contact</h2>
         <p>Grievance contact: Deepa G Garasangi, <a href="mailto:humanai.concierges@gmail.com">humanai.concierges@gmail.com</a>, <a href="tel:+919449230088">+91 94492 30088</a>, Bengaluru. We aim to respond within 7 working days.</p>
       </div>
     </section>
@@ -106,6 +112,7 @@
             <a data-site="linkedin" href="#" target="_blank" rel="noopener" aria-label="LinkedIn" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
           </div>
           <div class="foot-app">
+            <a class="app-badge" href="app.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg><span><small>Android &amp; iPhone</small>Get our free app</span></a>
             <a class="app-badge" data-site="play-store" href="#" target="_blank" rel="noopener" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg><span><small>Get the app on</small>Google Play</span></a>
             <button class="app-badge" type="button" data-install hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg><span><small>Free · no download size</small>Install the app</span></button>
           </div>
@@ -116,7 +123,7 @@
             <li><a href="services.html#nri">NRI Family Care</a></li>
             <li><a href="services.html#personal">Personal &amp; Household</a></li>
             <li><a href="services.html#business">Business Concierge</a></li>
-            <li><a href="pricing.html">Plans &amp; quotes</a></li>
+            <li><a href="pricing.html">Pricing &amp; quotes</a></li>
             <li><a href="how-we-work.html">How we work</a></li>
           </ul>
         </div>

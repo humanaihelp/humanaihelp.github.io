@@ -139,6 +139,14 @@ The site is a **Progressive Web App**. Anyone can install it:
 - **iPhone (Safari):** open the site → Share → **Add to Home Screen**.
 It opens full-screen with the HumanAI icon, like an app, and the main pages work even with a weak connection.
 
+### 5a. The Android app file (APK) — free, live today
+- Built with PWABuilder (free): package **io.github.humanaihelp.app**, version 1.0.0.0, target Android API 36.
+- The public page **/app.html** offers: install from Chrome, **Download APK** (`app/HumanAI-Concierge.apk`), and iPhone steps.
+- `.well-known/assetlinks.json` holds the app's certificate fingerprint, so the app opens full-screen without a browser bar. Don't edit or delete it.
+- **Keep the signing key private:** `HumanAI - Google Play package.zip` contains `signing.keystore` and its passwords. Never upload it to the website repo. Keep one copy in the HumanAI folder and one in a private Google Drive folder. If it's lost you can never update the app.
+- **New app version** (only needed for a new icon or name — website edits appear in the app automatically): PWABuilder → *Package for stores* → Android → **Use existing signing key** (upload `signing.keystore`) → raise the version number → replace `app/HumanAI-Concierge.apk`.
+- **Free app stores:** Indus Appstore (India, developer.indusappstore.com) and Samsung Galaxy Store take the same APK/AAB. Google Play costs a one-time US$25 (section 6).
+
 ---
 
 ## 6. Publish the app on Google Play Store

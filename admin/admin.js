@@ -7,7 +7,7 @@
   var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
 
   var KNOWN_PAGES = ["index.html", "services.html", "how-we-work.html", "team.html", "pricing.html", "contact.html",
-    "disclaimer.html", "refund-policy.html", "privacy.html", "terms.html", "404.html"];
+    "disclaimer.html", "refund-policy.html", "privacy.html", "terms.html", "app.html", "404.html"];
   var SITE_ROOT = new URL("../", location.href).href;
 
   var S = {

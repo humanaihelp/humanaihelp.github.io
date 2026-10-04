@@ -31,11 +31,56 @@
   "shortcuts": [
     {
       "name": "Services",
-      "url": "services.html"
+      "url": "services.html",
+      "icons": [
+        {
+          "src": "assets/img/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Contact",
-      "url": "contact.html"
+      "url": "contact.html",
+      "icons": [
+        {
+          "src": "assets/img/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "categories": [
+    "lifestyle",
+    "business",
+    "productivity"
+  ],
+  "dir": "ltr",
+  "screenshots": [
+    {
+      "src": "assets/img/screenshot-mobile-1.png",
+      "sizes": "1082x1922",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "HumanAI Concierge Services"
+    },
+    {
+      "src": "assets/img/screenshot-mobile-2.png",
+      "sizes": "1082x1922",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "HumanAI Concierge Services"
+    },
+    {
+      "src": "assets/img/screenshot-wide-1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "HumanAI Concierge Services"
     }
   ]
 }

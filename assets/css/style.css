@@ -1,6 +1,15 @@
 /* =========================================================
-   HumanAI Concierge Services LLP — Design System
+   HumanAI Concierge Services — Design System
    ========================================================= */
+
+/* Self-hosted fonts (SIL Open Font License) — no Google Fonts requests */
+@font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/plus-jakarta-sans-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:500;font-display:swap;src:url(../fonts/plus-jakarta-sans-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:600;font-display:swap;src:url(../fonts/plus-jakarta-sans-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:700;font-display:swap;src:url(../fonts/plus-jakarta-sans-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:800;font-display:swap;src:url(../fonts/plus-jakarta-sans-latin-800-normal.woff2) format("woff2")}
+@font-face{font-family:"Instrument Serif";font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/instrument-serif-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Instrument Serif";font-style:italic;font-weight:400;font-display:swap;src:url(../fonts/instrument-serif-latin-400-italic.woff2) format("woff2")}
 
 :root {
   --bg: #faf8f4;
@@ -693,3 +702,21 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--b
 .app-badge span { display: flex; flex-direction: column; line-height: 1.1; text-align: left; }
 .app-badge small { font-size: .66rem; font-weight: 500; opacity: .75; }
 .app-badge:hover { border-color: #fff; }
+
+/* click-to-load map (no third-party cookies until the visitor asks) */
+.map-slot{display:grid;place-items:center;align-content:center;gap:8px;height:220px;border-radius:12px;border:1px dashed var(--line);background:var(--bg-alt);text-align:center;padding:12px}
+.map-slot iframe{width:100%;height:100%;border:0;border-radius:12px}
+.map-slot.loaded{padding:0;border:0}
+
+/* Accessibility (WCAG AA): underlined in-text links, readable buttons */
+.prose a, p a, li a, .check a, .disc-box a, details a { text-decoration: underline; text-underline-offset: 2px; }
+.nav-links a, .btn, .brand, .foot-social a { text-decoration: none; }
+.site-footer .btn-wa, .btn-wa { color: #06301a; }
+.chat-top .who span { color: #15803d; }
+:root[data-theme="dark"] .chat-top .who span { color: #4ade80; }
+:root[data-theme="dark"] .disc-box a { color: #b3adff; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .chat-top .who span { color: #4ade80; } :root:not([data-theme="light"]) .disc-box a { color: #b3adff; } }
+:root:not([data-theme="dark"]) .pill.cool { color: #0f766e; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pill.cool { color: var(--ai); } }
+:root:not([data-theme="dark"]) .pill.warm { color: #9a4a0b; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pill.warm { color: var(--human); } }

@@ -26,7 +26,7 @@ export default {
   async fetch(req, env, ctx) {
     const url = new URL(req.url);
     const origin = req.headers.get("Origin") || "";
-    const allowed = (env.SITE_URL || "").replace(/\/$/, "");
+    let allowed = ""; try { allowed = new URL(env.SITE_URL).origin; } catch {}   // compare origins only (works for project sites with a /path too)
     const cors = { "Access-Control-Allow-Origin": origin === allowed ? origin : allowed, "Access-Control-Allow-Methods": "POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type", "Vary": "Origin" };
 
     if (req.method === "OPTIONS") return new Response(null, { headers: cors });
@@ -143,7 +143,7 @@ async function askAI(env, messages, channel) {
 
 async function getKnowledge(env) {
   if (KNOW.text && Date.now() - KNOW.at < 10 * 60 * 1000) return KNOW.text;
-  const base = (env.SITE_URL || "").replace(/\/$/, "");
+  const base = (env.SITE_URL || "").replace(/\/$/, "");   // full site address incl. any /path
   let text = "";
   try { text += await (await fetch(base + "/assets/knowledge.txt", { cf: { cacheTtl: 600 } })).text(); } catch {}
   try {

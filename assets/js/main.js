@@ -231,3 +231,13 @@
     document.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = new Date().getFullYear(); });
   });
 })();
+
+/* Click-to-load Google map (privacy: nothing loads from Google until clicked) */
+document.querySelectorAll(".map-slot").forEach(slot => {
+  const b = slot.querySelector("button"); if (!b) return;
+  b.addEventListener("click", () => {
+    const f = document.createElement("iframe");
+    f.src = slot.dataset.map; f.title = "Map of Bengaluru, our service area"; f.loading = "lazy"; f.referrerPolicy = "no-referrer-when-downgrade";
+    slot.innerHTML = ""; slot.appendChild(f); slot.classList.add("loaded");
+  });
+});

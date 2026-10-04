@@ -1,8 +1,9 @@
 /* HumanAI Concierge — offline support (makes the site installable as an app) */
-const CACHE = "hac-v2";
+const CACHE = "hac-v3";
 const CORE = ["./", "index.html", "services.html", "how-we-work.html", "team.html", "pricing.html", "contact.html",
-  "disclaimer.html", "refund-policy.html", "privacy.html", "terms.html", "404.html",
-  "assets/css/style.css", "assets/js/main.js", "assets/js/assistant.js", "assets/assistant.json", "assets/img/logo.svg", "assets/img/icon-192.png", "assets/img/icon-512.png"];
+  "disclaimer.html", "refund-policy.html", "privacy.html", "terms.html", "app.html", "404.html",
+  "assets/css/style.css", "assets/js/main.js", "assets/js/assistant.js", "assets/assistant.json", "assets/img/logo.svg", "assets/img/icon-192.png", "assets/img/icon-512.png",
+  "assets/fonts/plus-jakarta-sans-latin-400-normal.woff2", "assets/fonts/plus-jakarta-sans-latin-600-normal.woff2", "assets/fonts/plus-jakarta-sans-latin-700-normal.woff2", "assets/fonts/instrument-serif-latin-400-normal.woff2", "assets/fonts/instrument-serif-latin-400-italic.woff2"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener("fetch", e => {

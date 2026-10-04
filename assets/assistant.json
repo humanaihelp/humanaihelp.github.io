@@ -51,9 +51,9 @@
         "plan",
         "plans"
       ],
-      "answer": "Every request is different, so we give a free quote first. Options: pay per request, a monthly concierge plan, or a fixed-scope project. You always approve the price before we start.",
+      "answer": "Every request is different, so we give a free quote first. We work pay-per-request — no subscription, no sign-up fee. Projects like websites are quoted upfront. You always approve the price before we start. (Optional monthly plans are coming later.)",
       "link": "pricing.html",
-      "linkText": "Plans & quotes"
+      "linkText": "Pricing & quotes"
     },
     {
       "keys": [

@@ -20,9 +20,7 @@
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/img/icon-192.png">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/style.css">
   <script>try{var t=localStorage.getItem("hac-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "HumanAI Concierge Services", "description": "Human-led, AI-assisted concierge services in Bengaluru for NRI families, households and small businesses.", "founder": {"@type": "Person", "name": "Deepa Garasangi"}, "knowsLanguage": ["en", "kn", "hi"], "openingHours": "Mo-Sa 09:00-19:00", "url": "https://humanaihelp.github.io", "email": "humanai.concierges@gmail.com", "telephone": "+919449230088", "logo": "https://humanaihelp.github.io/assets/img/logo.svg", "address": {"@type": "PostalAddress", "addressLocality": "Bengaluru", "addressRegion": "Karnataka", "addressCountry": "IN"}, "areaServed": [{"@type": "City", "name": "Bengaluru"}, "Worldwide (remote)"]}</script>
@@ -41,7 +39,7 @@
         <li><a href="services.html">Services</a></li>
         <li><a href="how-we-work.html">How we work</a></li>
         <li><a href="team.html">About us</a></li>
-        <li><a href="pricing.html">Plans</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
       <div class="nav-actions">
@@ -126,7 +124,7 @@
               <span class="acc-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
             </button>
             <div class="acc-panel"><div class="acc-inner"><div class="acc-content">
-              <ul class="sub-list"><li><div><b>Parent check-in visits & calls</b><span>Scheduled home visits and friendly calls, with a short update to you after each one.</span></div></li><li><div><b>Doctor appointments & accompaniment</b><span>Booking, transport and accompanying your parents; visit notes shared with you.</span></div></li><li><div><b>Medicine refills & health-check reminders</b><span>Reminders and pharmacy coordination; lab test bookings at home or nearby.</span></div></li><li><div><b>Home repairs & maintenance</b><span>Electricians, plumbers, carpenters, appliance service — arranged and supervised.</span></div></li><li><div><b>Document pickup & courier</b><span>Collecting and couriering documents, cheques or parcels between family members.</span></div></li><li><div><b>Festival & birthday surprises</b><span>Cakes, flowers, sweets and gifts delivered to your family on the day.</span></div></li><li><div><b>Monthly Family Report</b><span>A one-page PDF every month: visits, appointments, refills, repairs and what's coming up — so you can see everything at a glance.</span></div></li></ul>
+              <ul class="sub-list"><li><div><b>Parent check-in visits & calls</b><span>Scheduled home visits and friendly calls, with a short update to you after each one.</span></div></li><li><div><b>Doctor appointments & accompaniment</b><span>Booking, transport and accompanying your parents; visit notes shared with you.</span></div></li><li><div><b>Medicine refills & health-check reminders</b><span>Reminders and pharmacy coordination; lab test bookings at home or nearby.</span></div></li><li><div><b>Home repairs & maintenance</b><span>Electricians, plumbers, carpenters, appliance service — arranged and supervised.</span></div></li><li><div><b>Document pickup & courier</b><span>Collecting and couriering documents, cheques or parcels between family members.</span></div></li><li><div><b>Festival & birthday surprises</b><span>Cakes, flowers, sweets and gifts delivered to your family on the day.</span></div></li><li><div><b>Family Report</b><span>A one-page PDF summary of everything we did — visits, appointments, refills, repairs and what's coming up — so you can see everything at a glance.</span></div></li></ul>
               <div class="acc-actions">
                 <a class="btn btn-wa btn-sm" href="https://wa.me/919449230088?text=Hi%20HumanAI%20Concierge%21%20I%20would%20like%20a%20quote%20for%3A%20NRI%20Family%20Care" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg> Ask on WhatsApp</a>
                 <a class="btn btn-ghost btn-sm" href="services.html#nri">Details</a>
@@ -360,11 +358,11 @@
           <p class="lead">Every family and business is different, so we quote after understanding what you need. Call or WhatsApp us for a free, no-obligation quote.</p>
         </div>
         <div class="grid grid-3">
-          <div class="card reveal"><span class="pill warm">Try us</span><h3 style="margin-top:14px">Pay per request</h3><p>One task at a time — perfect to see how we work before committing.</p></div>
-          <div class="card spot reveal glow-border" style="--d:80ms"><span class="pill brand">Most families</span><h3 style="margin-top:14px">Monthly concierge plan</h3><p>A set number of requests each month, a dedicated concierge and regular updates — ideal for NRI families.</p></div>
+          <div class="card spot reveal glow-border"><span class="pill warm">Start here</span><h3 style="margin-top:14px">Pay per request</h3><p>No subscription, no sign-up fee — you pay only for each request you approve.</p></div>
+          <div class="card reveal" style="--d:80ms"><span class="pill brand">Coming soon</span><h3 style="margin-top:14px">Monthly care plans</h3><p>Optional plans for regular parent visits and updates — launching later, built from what our clients need.</p></div>
           <div class="card reveal"><span class="pill cool">Business</span><h3 style="margin-top:14px">Fixed-scope projects</h3><p>Websites, Google profiles and AI assistants, quoted upfront with a clear timeline.</p></div>
         </div>
-        <div class="center" style="margin-top:32px"><a class="btn btn-ghost" href="pricing.html">Compare plans <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+        <div class="center" style="margin-top:32px"><a class="btn btn-ghost" href="pricing.html">How quotes work <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
       </div>
     </section>
 
@@ -449,6 +447,7 @@
             <a data-site="linkedin" href="#" target="_blank" rel="noopener" aria-label="LinkedIn" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
           </div>
           <div class="foot-app">
+            <a class="app-badge" href="app.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg><span><small>Android &amp; iPhone</small>Get our free app</span></a>
             <a class="app-badge" data-site="play-store" href="#" target="_blank" rel="noopener" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg><span><small>Get the app on</small>Google Play</span></a>
             <button class="app-badge" type="button" data-install hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg><span><small>Free · no download size</small>Install the app</span></button>
           </div>
@@ -459,7 +458,7 @@
             <li><a href="services.html#nri">NRI Family Care</a></li>
             <li><a href="services.html#personal">Personal &amp; Household</a></li>
             <li><a href="services.html#business">Business Concierge</a></li>
-            <li><a href="pricing.html">Plans &amp; quotes</a></li>
+            <li><a href="pricing.html">Pricing &amp; quotes</a></li>
             <li><a href="how-we-work.html">How we work</a></li>
           </ul>
         </div>
