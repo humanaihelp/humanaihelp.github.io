@@ -1,0 +1,367 @@
+{
+  "ai_url": "",
+  "name": "HumanAI Assistant",
+  "greeting": "Hi! 👋 I'm the HumanAI Assistant. I can answer quick questions about our services. For anything specific, a real person will help you on WhatsApp.",
+  "fallback": "I'm not sure about that one — but a real person can help. Tap \"Ask a person on WhatsApp\" and your question will be sent with it.",
+  "disclaimer": "Automated assistant with general information only. A person confirms everything on WhatsApp. Not for emergencies — call 112 / 108.",
+  "suggestions": [
+    "What services do you offer?",
+    "How much does it cost?",
+    "Remote shopping for NRIs",
+    "Care for my parents",
+    "Working hours",
+    "Is it safe to pay?"
+  ],
+  "answers": [
+    {
+      "keys": [
+        "hi",
+        "hello",
+        "hey",
+        "namaste",
+        "namaskara",
+        "ನಮಸ್ಕಾರ",
+        "नमस्ते"
+      ],
+      "answer": "Hello! How can I help you today? You can ask about our services, prices, hours, or how it works."
+    },
+    {
+      "keys": [
+        "service",
+        "services",
+        "offer",
+        "do you do",
+        "what do you",
+        "help with"
+      ],
+      "answer": "We offer 10 services: NRI Family Care, NRI Remote Shopping, Coming Home Visits, Personal & Household Concierge, Senior Digital Help, Wedding & Events, Relocation to Bengaluru, Property Care, Be There (proxy presence) and Business Concierge.",
+      "link": "services.html",
+      "linkText": "See all services"
+    },
+    {
+      "keys": [
+        "price",
+        "cost",
+        "charge",
+        "fee",
+        "fees",
+        "rate",
+        "how much",
+        "quote",
+        "plan",
+        "plans"
+      ],
+      "answer": "Every request is different, so we give a free quote first. Options: pay per request, a monthly concierge plan, or a fixed-scope project. You always approve the price before we start.",
+      "link": "pricing.html",
+      "linkText": "Plans & quotes"
+    },
+    {
+      "keys": [
+        "parent",
+        "parents",
+        "amma",
+        "appa",
+        "mother",
+        "father",
+        "elder",
+        "senior",
+        "nri",
+        "abroad",
+        "family care",
+        "doctor",
+        "hospital",
+        "visit",
+        "report",
+        "monthly report",
+        "update"
+      ],
+      "answer": "With NRI Family Care we visit your parents in Bengaluru, book and accompany doctor appointments, handle errands and repairs, and send you updates on WhatsApp. We coordinate care — we are not a medical or nursing service. Monthly plans include a one-page Monthly Family Report PDF.",
+      "link": "services.html#nri",
+      "linkText": "NRI Family Care"
+    },
+    {
+      "keys": [
+        "shop",
+        "shopping",
+        "saree",
+        "sarees",
+        "silk",
+        "jewellery",
+        "jewelry",
+        "buy",
+        "ship",
+        "courier",
+        "tailor",
+        "video call"
+      ],
+      "answer": "Our NRI Remote Shopping Assistant lets you shop Bengaluru stores on a live video call. We buy, pack and ship to you, or deliver to family. Customs and import rules of your country apply.",
+      "link": "services.html#shopping",
+      "linkText": "Remote shopping"
+    },
+    {
+      "keys": [
+        "coming home",
+        "visit india",
+        "trip",
+        "airport",
+        "pickup",
+        "arrival",
+        "vacation",
+        "holiday"
+      ],
+      "answer": "Visiting Bengaluru? We arrange airport pickup, get your home cleaned and stocked, and pack your trip with appointments and errands so you can enjoy your family.",
+      "link": "services.html#homecoming",
+      "linkText": "Coming Home Visits"
+    },
+    {
+      "keys": [
+        "be there",
+        "proxy",
+        "attend",
+        "birthday",
+        "anniversary",
+        "surprise",
+        "live stream",
+        "livestream",
+        "graduation",
+        "annual day",
+        "discharge",
+        "represent"
+      ],
+      "answer": "With Be There, we attend family moments in Bengaluru on your behalf — birthdays, poojas, school events, hospital discharges — with your gift or flowers, live-stream it to you on WhatsApp video, and send a photo memory card.",
+      "link": "services.html#be-there",
+      "linkText": "Be There"
+    },
+    {
+      "keys": [
+        "property",
+        "house",
+        "flat",
+        "apartment",
+        "tenant",
+        "rent",
+        "inspection"
+      ],
+      "answer": "Property Care: regular inspections with photos, repairs coordinated, and tenant move-in/move-out handled. We are not a broker and never hold your money.",
+      "link": "services.html#property",
+      "linkText": "Property Care"
+    },
+    {
+      "keys": [
+        "wedding",
+        "marriage",
+        "event",
+        "function",
+        "pooja",
+        "puja",
+        "party"
+      ],
+      "answer": "We help plan weddings and family functions in Bengaluru — vendor scouting on video, invitations, return gifts and guest travel.",
+      "link": "services.html#wedding",
+      "linkText": "Wedding & Events"
+    },
+    {
+      "keys": [
+        "relocate",
+        "relocation",
+        "moving",
+        "move to bangalore",
+        "move to bengaluru",
+        "school",
+        "house hunting"
+      ],
+      "answer": "Moving to Bengaluru? We visit homes and schools on video, and coordinate movers, utilities and home setup.",
+      "link": "services.html#relocation",
+      "linkText": "Relocation"
+    },
+    {
+      "keys": [
+        "smartphone",
+        "phone setup",
+        "upi",
+        "scam",
+        "fraud",
+        "whatsapp setup",
+        "digital"
+      ],
+      "answer": "Senior Digital Help: we patiently set up phones and video calling for parents and teach safe UPI use and scam awareness — in Kannada, Hindi or English.",
+      "link": "services.html#senior-digital",
+      "linkText": "Senior Digital Help"
+    },
+    {
+      "keys": [
+        "website",
+        "google",
+        "business",
+        "shop owner",
+        "clinic",
+        "ai assistant",
+        "maps",
+        "profile"
+      ],
+      "answer": "Business Concierge: websites, Google Business Profile, WhatsApp Business setup, AI assistants for customer questions and admin help.",
+      "link": "services.html#business",
+      "linkText": "Business Concierge"
+    },
+    {
+      "keys": [
+        "hours",
+        "time",
+        "timing",
+        "open",
+        "when",
+        "available"
+      ],
+      "answer": "We work Monday to Saturday, 9am–7pm IST. Messages after hours are answered the next working day."
+    },
+    {
+      "keys": [
+        "where",
+        "location",
+        "city",
+        "area",
+        "bangalore",
+        "bengaluru",
+        "located",
+        "office"
+      ],
+      "answer": "We're based in Bengaluru. In-person services are available across Bengaluru; planning, bookings and coordination are available remotely anywhere in the world."
+    },
+    {
+      "keys": [
+        "language",
+        "kannada",
+        "hindi",
+        "english"
+      ],
+      "answer": "We speak English, ಕನ್ನಡ Kannada and हिन्दी Hindi."
+    },
+    {
+      "keys": [
+        "how",
+        "work",
+        "process",
+        "steps",
+        "start"
+      ],
+      "answer": "It's simple: 1) Ask on WhatsApp or the form, 2) we plan with the help of AI tools, 3) you get a clear quote, 4) a real person does the work, 5) you get a written summary.",
+      "link": "how-we-work.html",
+      "linkText": "How we work"
+    },
+    {
+      "keys": [
+        "safe",
+        "pay",
+        "payment",
+        "otp",
+        "pin",
+        "password",
+        "upi id",
+        "bank",
+        "secure"
+      ],
+      "answer": "We NEVER ask for OTPs, PINs, card numbers or passwords. Pay only via UPI, bank transfer or a payment link sent from our official number +91 94492 30088."
+    },
+    {
+      "keys": [
+        "refund",
+        "cancel",
+        "cancellation",
+        "money back"
+      ],
+      "answer": "You can cancel before work starts for a full refund of our fee. After work starts, we charge only for work done. Third-party costs follow their own rules.",
+      "link": "refund-policy.html",
+      "linkText": "Refund policy"
+    },
+    {
+      "keys": [
+        "emergency",
+        "urgent",
+        "ambulance",
+        "police",
+        "accident",
+        "fire"
+      ],
+      "answer": "⚠️ We are not an emergency service. Please call 112 now (or 108 for an ambulance). Then message us and we'll help with follow-up."
+    },
+    {
+      "keys": [
+        "medical",
+        "advice",
+        "legal",
+        "lawyer",
+        "tax",
+        "visa",
+        "immigration"
+      ],
+      "answer": "We coordinate and assist, but we don't give medical, legal, tax, financial or immigration advice. We can help you reach qualified professionals.",
+      "link": "disclaimer.html",
+      "linkText": "Disclaimer"
+    },
+    {
+      "keys": [
+        "who",
+        "founder",
+        "owner",
+        "about",
+        "team",
+        "deepa",
+        "muttu"
+      ],
+      "answer": "HumanAI Concierge Services was founded by Deepa Garasangi (Founder & Proprietor). Operations and technology are led by Muttu Biradar.",
+      "link": "team.html",
+      "linkText": "About us"
+    },
+    {
+      "keys": [
+        "ai",
+        "bot",
+        "robot",
+        "human",
+        "real person",
+        "chatgpt"
+      ],
+      "answer": "We use AI tools behind the scenes to plan faster, but a real person owns and confirms every request. I'm an automated helper — for real help, tap \"Ask a person on WhatsApp\"."
+    },
+    {
+      "keys": [
+        "job",
+        "work",
+        "partner",
+        "career",
+        "hiring",
+        "vacancy",
+        "part time",
+        "part-time",
+        "join"
+      ],
+      "answer": "We're building a verified HumanAI Partner network in Bengaluru — flexible, paid-per-task work like parent visits, accompanying to doctors, shopping and errands. Women are especially encouraged to apply.",
+      "link": "team.html#partners",
+      "linkText": "Become a Partner"
+    },
+    {
+      "keys": [
+        "contact",
+        "call",
+        "number",
+        "email",
+        "reach",
+        "talk"
+      ],
+      "answer": "WhatsApp or call +91 94492 30088, or email humanai.concierges@gmail.com.",
+      "link": "contact.html",
+      "linkText": "Contact page"
+    },
+    {
+      "keys": [
+        "privacy",
+        "data",
+        "information",
+        "personal details"
+      ],
+      "answer": "We collect only what a task needs, never ask for passwords or OTPs, and delete your data on request.",
+      "link": "privacy.html",
+      "linkText": "Privacy policy"
+    }
+  ]
+}

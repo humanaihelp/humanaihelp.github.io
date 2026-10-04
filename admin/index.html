@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Website Admin · HumanAI Concierge</title>
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<style>
+:root{--bg:#f4f3f8;--panel:#fff;--ink:#16182c;--muted:#636782;--line:#e3e1ec;--brand:#4f46e5;--brand-soft:#eceafe;--ok:#16a34a;--warn:#d97706;--bad:#dc2626;--r:12px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-size:14px}
+button,input,select,textarea{font:inherit;color:inherit}
+.btn{border:1px solid var(--line);background:var(--panel);padding:8px 14px;border-radius:999px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--ink)}.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}.btn.danger{color:var(--bad)}
+.btn:disabled{opacity:.5;cursor:not-allowed}.btn.sm{padding:5px 10px;font-size:12.5px}
+input[type=text],input[type=password],input[type=url],input[type=tel],input[type=email],select,textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff}
+textarea{min-height:90px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px}
+label{display:block;font-weight:600;font-size:12.5px;margin:12px 0 5px;color:#33364f}
+.hint{color:var(--muted);font-size:12.5px;line-height:1.5}
+/* Login */
+#login{min-height:100vh;display:grid;place-items:center;padding:20px}
+.login-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:28px;max-width:520px;width:100%;box-shadow:0 20px 50px -25px rgba(30,20,90,.35)}
+.login-card h1{font-size:22px;margin:10px 0 4px}.row{display:flex;gap:10px}.row>*{flex:1}
+/* App */
+#app{display:none;height:100vh;grid-template-rows:auto 1fr}
+.top{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--panel);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.top .logo{display:flex;align-items:center;gap:8px;font-weight:800}.top .logo img{width:28px;height:28px}
+.top .grow{flex:1}.badge{background:var(--brand-soft);color:var(--brand);border-radius:999px;padding:3px 9px;font-weight:700;font-size:12px}
+.badge.local{background:#fff3e0;color:var(--warn)}
+.main{display:grid;grid-template-columns:1fr 360px;min-height:0}
+@media(max-width:900px){.main{grid-template-columns:1fr}.side{max-height:45vh}}
+.stage{position:relative;min-height:0;background:#e9e7f1;display:flex;flex-direction:column}
+.stage-bar{display:flex;gap:6px;padding:6px 10px;align-items:center;border-bottom:1px solid var(--line);background:#f7f6fb}
+.stage-bar .hint{flex:1}
+iframe{flex:1;width:100%;border:0;background:#fff;margin:0 auto;transition:max-width .3s}
+.side{background:var(--panel);border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.tabs{display:flex;border-bottom:1px solid var(--line);overflow-x:auto}
+.tabs button{flex:1;border:0;background:none;padding:11px 8px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+.tabs button.on{color:var(--brand);border-color:var(--brand)}
+.pane{display:none;padding:14px 16px 30px;overflow:auto}.pane.on{display:block}
+.crumbs{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 10px}
+.crumbs button{border:1px solid var(--line);background:#fafafe;border-radius:6px;padding:3px 7px;font-size:11.5px;cursor:pointer;font-family:ui-monospace,monospace}
+.crumbs button.cur{background:var(--brand);color:#fff;border-color:var(--brand)}
+.acts{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.box{border:1px solid var(--line);border-radius:var(--r);padding:12px;margin:12px 0;background:#fcfcff}
+.box h4{margin:0 0 6px;font-size:13px}
+.colors{display:grid;grid-template-columns:1fr 1fr;gap:8px}.colors input[type=color]{width:100%;height:36px;border:1px solid var(--line);border-radius:8px;padding:2px;background:#fff}
+.list{display:grid;gap:6px}.list .it{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;cursor:pointer}
+.list .it:hover{border-color:var(--brand)}.list .it.cur{border-color:var(--brand);background:var(--brand-soft)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--warn);display:inline-block}
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(100px);background:#16182c;color:#fff;padding:11px 18px;border-radius:999px;font-weight:600;transition:transform .3s;z-index:99;max-width:90vw}
+#toast.show{transform:translateX(-50%)}
+.modal{position:fixed;inset:0;background:rgba(20,18,40,.45);display:none;place-items:center;z-index:50;padding:16px}.modal.on{display:grid}
+.modal .card{background:#fff;border-radius:16px;padding:22px;max-width:560px;width:100%;max-height:90vh;overflow:auto}
+.help h3{margin:18px 0 6px;font-size:14px}.help p,.help li{color:#3b3e57;line-height:1.55}
+kbd{background:#f1f0f7;border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:12px}
+
+/* Letter studio */
+#letterStudio{position:fixed;inset:0;background:var(--bg);z-index:60;display:none;grid-template-columns:420px 1fr;grid-template-rows:auto 1fr}
+#letterStudio.on{display:grid}
+@media(max-width:900px){#letterStudio{grid-template-columns:1fr;grid-template-rows:auto auto 1fr;overflow:auto}}
+.ls-top{grid-column:1/-1;display:flex;gap:8px;align-items:center;padding:10px 14px;background:var(--panel);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.ls-form{overflow:auto;padding:14px 16px 30px;background:var(--panel);border-right:1px solid var(--line)}
+#lsBody{min-height:220px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;line-height:1.5;font-family:Calibri,Arial,sans-serif;font-size:14px;overflow:auto}
+#lsBody:focus{outline:2px solid var(--brand)}
+.fmt{display:flex;gap:4px;margin-bottom:6px}.fmt button{border:1px solid var(--line);background:#fff;border-radius:6px;padding:3px 9px;cursor:pointer;font-weight:700}
+#lsPreview{width:100%;height:100%;border:0;background:#e9e7f1;min-height:600px}
+#lsList .it{cursor:default;align-items:flex-start}
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<section id="login">
+  <div class="login-card">
+    <img src="../assets/img/logo.svg" width="44" height="44" alt="">
+    <h1>Website Admin</h1>
+    <p class="hint">Edit any text, link, image, colour or contact detail on the HumanAI Concierge website, then publish. Changes go live about 1 minute after publishing.</p>
+    <div class="row">
+      <div><label for="owner">GitHub account / organisation</label><input type="text" id="owner" value="humanaihelp"></div>
+      <div><label for="branch">Branch</label><input type="text" id="branch" value="main"></div>
+    </div>
+    <label for="repo">Repository</label><input type="text" id="repo" value="humanaihelp.github.io">
+    <label for="token">GitHub access token</label><input type="password" id="token" placeholder="github_pat_…" autocomplete="off">
+    <p class="hint">Create one at GitHub → Settings → Developer settings → Fine-grained tokens, with <b>Contents: Read and write</b> access to this repository only. See the Help tab or ADMIN-GUIDE for step-by-step instructions.</p>
+    <label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="remember"> Remember on this device (only on your own computer)</label>
+    <div class="acts" style="margin-top:16px">
+      <button class="btn primary" id="btnLogin">Sign in &amp; edit</button>
+      <button class="btn" id="btnLocal" title="Edit without signing in; download the changed files at the end">Edit offline (download files)</button>
+    </div>
+    <p class="hint" id="loginMsg"></p>
+  </div>
+</section>
+
+<!-- ============ APP ============ -->
+<section id="app">
+  <div class="top">
+    <div class="logo"><img src="../assets/img/logo.svg" alt="">Admin</div>
+    <span class="badge" id="modeBadge">GitHub</span>
+    <select id="pageSel" style="width:auto;min-width:200px"></select>
+    <div class="grow"></div>
+    <span class="hint" id="changedInfo">No unpublished changes</span>
+    <button class="btn" id="btnDiscard">Discard changes</button>
+    <button class="btn primary" id="btnPublish">Publish</button>
+    <button class="btn" id="btnView" title="Open the live website">View site ↗</button>
+    <button class="btn" id="btnLogout">Sign out</button>
+  </div>
+  <div class="main">
+    <div class="stage">
+      <div class="stage-bar">
+        <span class="hint">Click any text to edit it. Click an item to select it, then use the panel on the right. <kbd>Ctrl</kbd>+<kbd>Z</kbd> undoes.</span>
+        <button class="btn sm" data-w="100%">Desktop</button><button class="btn sm" data-w="820px">Tablet</button><button class="btn sm" data-w="400px">Phone</button>
+      </div>
+      <iframe id="frame" title="Page editor"></iframe>
+    </div>
+    <aside class="side">
+      <div class="tabs">
+        <button data-pane="pEdit" class="on">Selected</button>
+        <button data-pane="pPage">Page</button>
+        <button data-pane="pSite">Site settings</button>
+        <button data-pane="pPages">Pages</button>
+        <button data-pane="pBrand">Brand kit</button>
+        <button data-pane="pLetters" id="tabLetters">Letters</button>
+        <button data-pane="pEnq" id="tabEnq">Enquiries</button>
+        <button data-pane="pHelp">Help</button>
+      </div>
+
+      <div class="pane on" id="pEdit">
+        <p class="hint" id="selNone">Click something on the page to select it.</p>
+        <div id="selBox" style="display:none">
+          <div class="hint">Selected (click a level to select a bigger or smaller part):</div>
+          <div class="crumbs" id="crumbs"></div>
+          <div class="acts">
+            <button class="btn sm" id="aDup">Duplicate</button>
+            <button class="btn sm" id="aUp">Move up</button>
+            <button class="btn sm" id="aDown">Move down</button>
+            <button class="btn sm danger" id="aDel">Delete</button>
+          </div>
+          <div class="box" id="linkBox" style="display:none">
+            <h4>Link</h4>
+            <label for="lHref">Goes to (web address, page name, tel:, mailto: or https://wa.me/…)</label>
+            <input type="text" id="lHref">
+            <label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="lNew"> Open in a new tab</label>
+            <div class="acts"><button class="btn sm primary" id="lApply">Apply link</button></div>
+          </div>
+          <div class="box" id="imgBox">
+            <h4>Image</h4>
+            <p class="hint" id="imgHint">Insert a photo into the selected area (for example a team photo box), or replace the selected image.</p>
+            <input type="file" id="imgFile" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+            <label for="imgAlt">Description of the image (for accessibility)</label><input type="text" id="imgAlt">
+            <div class="acts"><button class="btn sm primary" id="imgApply">Insert / replace image</button></div>
+          </div>
+          <div class="box">
+            <h4>Advanced: edit HTML of selection</h4>
+            <textarea id="htmlEd"></textarea>
+            <div class="acts"><button class="btn sm" id="htmlApply">Apply HTML</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pane" id="pPage">
+        <label for="pgTitle">Browser tab title &amp; Google title</label><input type="text" id="pgTitle">
+        <label for="pgDesc">Google description (about 150 characters)</label><textarea id="pgDesc" style="font-family:inherit;min-height:70px"></textarea>
+        <div class="acts"><button class="btn sm primary" id="pgApply">Apply</button></div>
+        <div class="box">
+          <h4>Header &amp; footer</h4>
+          <p class="hint">The menu at the top and the footer are shared by all pages. When you change them on any page, the change is copied to every page when you publish.</p>
+          <label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="syncHF" checked> Copy header &amp; footer changes to all pages</label>
+        </div>
+      </div>
+
+      <div class="pane" id="pSite">
+        <p class="hint">These details appear in many places. Changing them here updates every page.</p>
+        <label for="sName">Business name</label><input type="text" id="sName">
+        <label for="sProp">Proprietor name</label><input type="text" id="sProp">
+        <label for="sPhone">Phone (as shown)</label><input type="tel" id="sPhone" placeholder="+91 94492 30088">
+        <label for="sWa">WhatsApp number (country code + number, digits only)</label><input type="tel" id="sWa" placeholder="919449230088">
+        <label for="sEmail">Email</label><input type="email" id="sEmail">
+        <label for="sHours">Working hours</label><input type="text" id="sHours">
+        <label for="sGst">GSTIN (leave empty to hide)</label><input type="text" id="sGst" placeholder="29ABCDE1234F1Z5">
+        <label for="sReview">Google review link (from Google Business Profile → "Ask for reviews"; empty = hidden)</label><input type="url" id="sReview" placeholder="https://g.page/r/...">
+        <label for="sMaps">Google Maps link to your business profile (empty = hidden)</label><input type="url" id="sMaps" placeholder="https://maps.app.goo.gl/...">
+        <label for="sInsta">Instagram page link (empty = hidden)</label><input type="url" id="sInsta" placeholder="https://www.instagram.com/humanaiconcierge">
+        <label for="sFb">Facebook page link (empty = hidden)</label><input type="url" id="sFb" placeholder="https://www.facebook.com/...">
+        <label for="sLi">LinkedIn company page link (empty = hidden)</label><input type="url" id="sLi" placeholder="https://www.linkedin.com/company/...">
+        <label for="sWorker">Chatbot &amp; enquiry service address (free Cloudflare Worker; empty = basic chat, no log)</label><input type="url" id="sWorker" placeholder="https://humanai-bot.<your-name>.workers.dev">
+        <label for="sPlay">Google Play app link (after publishing; empty = hidden)</label><input type="url" id="sPlay" placeholder="https://play.google.com/store/apps/details?id=io.github.humanaihelp.app">
+        <div class="acts"><button class="btn primary" id="sApply">Apply to all pages</button></div>
+        <div class="box">
+          <h4>Brand colours</h4>
+          <div class="colors">
+            <div><label for="cBrand">Main colour</label><input type="color" id="cBrand"></div>
+            <div><label for="cBrand2">Main colour (light)</label><input type="color" id="cBrand2"></div>
+            <div><label for="cHuman">Warm accent</label><input type="color" id="cHuman"></div>
+            <div><label for="cAi">Cool accent</label><input type="color" id="cAi"></div>
+          </div>
+          <div class="acts"><button class="btn sm primary" id="cApply">Apply colours</button><button class="btn sm" id="cReset">Reset to original</button></div>
+        </div>
+        <div class="box">
+          <h4>Chat assistant answers</h4>
+          <p class="hint">Questions and answers used by the "Ask us" chat bubble. Each answer has <b>keys</b> (words visitors might type), the <b>answer</b>, and an optional <b>link</b>. Keep the format exactly as it is.</p>
+          <textarea id="aiJson" style="min-height:220px"></textarea>
+          <div class="acts"><button class="btn sm primary" id="aiApply">Save assistant answers</button></div>
+        </div>
+        <div class="box">
+          <h4>Logo</h4>
+          <p class="hint">Upload a square logo (SVG or PNG, at least 512×512). It replaces the logo and browser icon on all pages.</p>
+          <input type="file" id="logoFile" accept="image/svg+xml,image/png">
+          <div class="acts"><button class="btn sm primary" id="logoApply">Replace logo</button></div>
+        </div>
+      </div>
+
+      <div class="pane" id="pPages">
+        <p class="hint">Click a page to edit it. A dot means it has unpublished changes.</p>
+        <div class="list" id="pageList"></div>
+        <div class="box">
+          <h4>Create a new page</h4>
+          <p class="hint">Copies the page you're editing now. Then change its text and add a link to it from the menu or footer (select a menu item → Duplicate → edit text and link).</p>
+          <label for="newName">New page file name</label><input type="text" id="newName" placeholder="e.g. offers.html">
+          <div class="acts"><button class="btn sm primary" id="newApply">Create page</button></div>
+        </div>
+      </div>
+
+      <div class="pane" id="pBrand">
+        <p class="hint">Download logos, social media images, visiting cards and office templates (letterhead, document, quotation, presentation, email signature). Open .docx in Word or Google Docs and .pptx in PowerPoint or Google Slides.</p>
+        <div class="box"><h4>Logos</h4><div class="list"><a class="it" href="../brand-kit/logo/icon-maskable-512.png" download style="text-decoration:none;color:inherit"><span>icon-maskable-512.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/logo/logo-horizontal-dark.png" download style="text-decoration:none;color:inherit"><span>logo-horizontal-dark.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/logo/logo-horizontal-light.png" download style="text-decoration:none;color:inherit"><span>logo-horizontal-light.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/logo/logo-mark-1024.png" download style="text-decoration:none;color:inherit"><span>logo-mark-1024.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/logo/logo-mark.svg" download style="text-decoration:none;color:inherit"><span>logo-mark.svg</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/logo/logo-stacked.png" download style="text-decoration:none;color:inherit"><span>logo-stacked.png</span><span class="hint">↓</span></a></div></div>
+        <div class="box"><h4>Social media</h4><div class="list"><a class="it" href="../brand-kit/social/SOCIAL-MEDIA-KIT.md" download style="text-decoration:none;color:inherit"><span>SOCIAL-MEDIA-KIT.md</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/social/facebook-cover-1640x624.png" download style="text-decoration:none;color:inherit"><span>facebook-cover-1640x624.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/social/instagram-be-there-1080.png" download style="text-decoration:none;color:inherit"><span>instagram-be-there-1080.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/social/instagram-coming-home-1080.png" download style="text-decoration:none;color:inherit"><span>instagram-coming-home-1080.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/social/instagram-launch-1080.png" download style="text-decoration:none;color:inherit"><span>instagram-launch-1080.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/social/instagram-nri-family-care-1080.png" download style="text-decoration:none;color:inherit"><span>instagram-nri-family-care-1080.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/social/instagram-remote-shopping-1080.png" download style="text-decoration:none;color:inherit"><span>instagram-remote-shopping-1080.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/social/instagram-safety-1080.png" download style="text-decoration:none;color:inherit"><span>instagram-safety-1080.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/social/linkedin-cover-1584x396.png" download style="text-decoration:none;color:inherit"><span>linkedin-cover-1584x396.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/social/og-image-1200x630.png" download style="text-decoration:none;color:inherit"><span>og-image-1200x630.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/social/profile-picture-640.png" download style="text-decoration:none;color:inherit"><span>profile-picture-640.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/social/whatsapp-status-1080x1920.png" download style="text-decoration:none;color:inherit"><span>whatsapp-status-1080x1920.png</span><span class="hint">↓</span></a></div></div>
+        <div class="box"><h4>Visiting cards &amp; WhatsApp QR (print)</h4><div class="list"><a class="it" href="../brand-kit/print/visiting-card-back-deepa.png" download style="text-decoration:none;color:inherit"><span>visiting-card-back-deepa.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/print/visiting-card-back-muttu.png" download style="text-decoration:none;color:inherit"><span>visiting-card-back-muttu.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/print/visiting-card-front.png" download style="text-decoration:none;color:inherit"><span>visiting-card-front.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/print/visiting-cards-print.pdf" download style="text-decoration:none;color:inherit"><span>visiting-cards-print.pdf</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/print/whatsapp-qr-stand-a6-print.pdf" download style="text-decoration:none;color:inherit"><span>whatsapp-qr-stand-a6-print.pdf</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/print/whatsapp-qr-stand-a6.png" download style="text-decoration:none;color:inherit"><span>whatsapp-qr-stand-a6.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/print/whatsapp-qr.png" download style="text-decoration:none;color:inherit"><span>whatsapp-qr.png</span><span class="hint">↓</span></a></div></div>
+        <div class="box"><h4>Office templates &amp; client onboarding</h4><p class="hint">Blank templates only. Never upload filled-in client agreements, consent forms or the client tracker here — this website folder is public. Keep filled files in Google Drive.</p><div class="list"><a class="it" href="../brand-kit/office/HumanAI-Client-Service-Agreement.docx" download style="text-decoration:none;color:inherit"><span>HumanAI-Client-Service-Agreement.docx</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Client-Service-Agreement.pdf" download style="text-decoration:none;color:inherit"><span>HumanAI-Client-Service-Agreement.pdf</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Client-Tracker.xlsx" download style="text-decoration:none;color:inherit"><span>HumanAI-Client-Tracker.xlsx</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Document-Template.docx" download style="text-decoration:none;color:inherit"><span>HumanAI-Document-Template.docx</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Document-Template.pdf" download style="text-decoration:none;color:inherit"><span>HumanAI-Document-Template.pdf</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Email-Signature.html" download style="text-decoration:none;color:inherit"><span>HumanAI-Email-Signature.html</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Family-Consent-Form.docx" download style="text-decoration:none;color:inherit"><span>HumanAI-Family-Consent-Form.docx</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Family-Consent-Form.pdf" download style="text-decoration:none;color:inherit"><span>HumanAI-Family-Consent-Form.pdf</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Letterhead.docx" download style="text-decoration:none;color:inherit"><span>HumanAI-Letterhead.docx</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Letterhead.pdf" download style="text-decoration:none;color:inherit"><span>HumanAI-Letterhead.pdf</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-New-Client-Intake-Form.docx" download style="text-decoration:none;color:inherit"><span>HumanAI-New-Client-Intake-Form.docx</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-New-Client-Intake-Form.pdf" download style="text-decoration:none;color:inherit"><span>HumanAI-New-Client-Intake-Form.pdf</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Partner-Agreement.docx" download style="text-decoration:none;color:inherit"><span>HumanAI-Partner-Agreement.docx</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Partner-Agreement.pdf" download style="text-decoration:none;color:inherit"><span>HumanAI-Partner-Agreement.pdf</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Partner-Application-Form.docx" download style="text-decoration:none;color:inherit"><span>HumanAI-Partner-Application-Form.docx</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Partner-Application-Form.pdf" download style="text-decoration:none;color:inherit"><span>HumanAI-Partner-Application-Form.pdf</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Partner-Onboarding-Guide.docx" download style="text-decoration:none;color:inherit"><span>HumanAI-Partner-Onboarding-Guide.docx</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Partner-Onboarding-Guide.pdf" download style="text-decoration:none;color:inherit"><span>HumanAI-Partner-Onboarding-Guide.pdf</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Partner-Verification-Checklist.docx" download style="text-decoration:none;color:inherit"><span>HumanAI-Partner-Verification-Checklist.docx</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Partner-Verification-Checklist.pdf" download style="text-decoration:none;color:inherit"><span>HumanAI-Partner-Verification-Checklist.pdf</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Presentation-Template.pdf" download style="text-decoration:none;color:inherit"><span>HumanAI-Presentation-Template.pdf</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Presentation-Template.pptx" download style="text-decoration:none;color:inherit"><span>HumanAI-Presentation-Template.pptx</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Quotation-Template.docx" download style="text-decoration:none;color:inherit"><span>HumanAI-Quotation-Template.docx</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/office/HumanAI-Quotation-Template.pdf" download style="text-decoration:none;color:inherit"><span>HumanAI-Quotation-Template.pdf</span><span class="hint">↓</span></a></div></div>
+        <div class="box"><h4>Advertising posts</h4><div class="list"><a class="it" href="../brand-kit/ads/ad-diwali-from-abroad-1080.png" download style="text-decoration:none;color:inherit"><span>ad-diwali-from-abroad-1080.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/ads/ad-founding-families-1080.png" download style="text-decoration:none;color:inherit"><span>ad-founding-families-1080.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/ads/ad-story-parents-1080x1920.png" download style="text-decoration:none;color:inherit"><span>ad-story-parents-1080x1920.png</span><span class="hint">↓</span></a></div></div>
+        <div class="box"><h4>Google Play Store listing</h4><div class="list"><a class="it" href="../brand-kit/play-store/app-icon-512.png" download style="text-decoration:none;color:inherit"><span>app-icon-512.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/play-store/feature-graphic-1024x500.png" download style="text-decoration:none;color:inherit"><span>feature-graphic-1024x500.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/play-store/phone-screenshot-1.png" download style="text-decoration:none;color:inherit"><span>phone-screenshot-1.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/play-store/phone-screenshot-2.png" download style="text-decoration:none;color:inherit"><span>phone-screenshot-2.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/play-store/phone-screenshot-3.png" download style="text-decoration:none;color:inherit"><span>phone-screenshot-3.png</span><span class="hint">↓</span></a><a class="it" href="../brand-kit/play-store/phone-screenshot-4.png" download style="text-decoration:none;color:inherit"><span>phone-screenshot-4.png</span><span class="hint">↓</span></a></div></div>
+        <p class="hint">To update these later, ask your designer/Claude to regenerate them and upload to the brand-kit folder on GitHub.</p>
+      </div>
+
+      <div class="pane" id="pLetters">
+        <p class="hint">Write letters on the official letterhead (logo, business name, GSTIN, contact details), then <b>download as PDF</b>, <b>print</b>, and <b>save</b> them to a register.</p>
+        <div class="acts"><button class="btn primary" id="openStudio">Open Letter Studio</button></div>
+        <div class="box"><h4>Where letters are saved</h4><p class="hint">Letters can contain personal information, so they are saved in a separate <b>private</b> GitHub repository (default name <b>humanai-letters</b>) — never on the public website. In offline mode they are saved only in this browser. See ADMIN-GUIDE section 4a.</p></div>
+      </div>
+
+      <div class="pane" id="pEnq">
+        <p class="hint">Everyone who contacts you through the website form or WhatsApp is logged here (when the free chatbot service is set up — ADMIN-GUIDE section 9). Entries delete themselves after 12 months.</p>
+        <label for="enqKey">Enquiry log password (ADMIN_KEY)</label><input type="password" id="enqKey" autocomplete="off">
+        <label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="enqRemember"> Remember on this device</label>
+        <div class="acts"><button class="btn sm primary" id="enqLoad">Load enquiries</button><button class="btn sm" id="enqCsv">Export CSV</button></div>
+        <div class="acts" id="enqFilter"></div>
+        <p class="hint" id="enqStatus"></p>
+        <div class="list" id="enqList"></div>
+      </div>
+
+      <div class="pane help" id="pHelp">
+        <h3>Editing text</h3><p>Click on any words on the page and type. Formatting shortcuts: <kbd>Ctrl</kbd>+<kbd>B</kbd> bold, <kbd>Ctrl</kbd>+<kbd>I</kbd> italic. Undo with <kbd>Ctrl</kbd>+<kbd>Z</kbd>.</p>
+        <h3>Adding or removing items</h3><p>Click an item (for example a service point, a FAQ question or a card). In <b>Selected</b>, choose the right level, then <b>Duplicate</b>, <b>Move up/down</b> or <b>Delete</b>.</p>
+        <h3>Links and buttons</h3><p>Select a button or link; the <b>Link</b> box lets you change where it goes.</p>
+        <h3>Photos</h3><p>Select the photo box (for example the team initials), choose an image file and press <b>Insert / replace image</b>.</p>
+        <h3>Phone, email, GSTIN, colours, logo</h3><p>Use <b>Site settings</b> — one change updates every page.</p>
+        <h3>Publishing</h3><p>Press <b>Publish</b>. All changed files are saved to GitHub in one step and the live site updates in about a minute. Unpublished changes are kept on this computer as a draft.</p>
+        <h3>Collapsible sections</h3><p>In the editor, all collapsible sections and tabs are shown open so you can edit them. On the live site they stay collapsible.</p>
+        <h3>Safety</h3><p>Your token is only sent to GitHub. Never share it. If you think it leaked, delete it in GitHub settings and create a new one.</p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<div class="modal" id="pubModal"><div class="card">
+  <h3 style="margin-top:0">Publish changes</h3>
+  <p class="hint" id="pubList"></p>
+  <label for="pubMsg">Short note about this change</label><input type="text" id="pubMsg" value="Website update">
+  <div class="acts" style="margin-top:16px"><button class="btn primary" id="pubGo">Publish now</button><button class="btn" id="pubCancel">Cancel</button></div>
+  <p class="hint" id="pubStatus"></p>
+</div></div>
+
+
+<section id="letterStudio" aria-label="Letter studio">
+  <div class="ls-top">
+    <b>Letter Studio</b>
+    <button class="btn sm" id="lsNew">New letter</button>
+    <div style="flex:1"></div>
+    <span class="hint" id="lsStatus"></span>
+    <button class="btn sm" id="lsPrint">Print</button>
+    <button class="btn sm" id="lsPdf">Download PDF</button>
+    <button class="btn sm primary" id="lsSave">Save letter</button>
+    <button class="btn sm" id="lsClose">Close</button>
+  </div>
+  <div class="ls-form">
+    <label for="lsTpl">Template</label>
+    <div class="row"><select id="lsTpl"></select><button class="btn sm" id="lsUseTpl" style="flex:0 0 auto">Use template</button></div>
+    <div class="row"><div><label for="lsDate">Date</label><input type="text" id="lsDate" placeholder="YYYY-MM-DD"></div>
+      <div><label for="lsSign">Signed by</label><select id="lsSign"><option value="deepa">Deepa G Garasangi — Founder &amp; Proprietor</option><option value="muttu">Muttu Biradar — Operations &amp; Technology Lead</option></select></div></div>
+    <label for="lsTo">To (name, designation, address — one per line)</label><textarea id="lsTo" style="font-family:inherit;min-height:70px" placeholder="To Whom It May Concern"></textarea>
+    <label for="lsSubject">Subject</label><input type="text" id="lsSubject">
+    <label>Letter text</label>
+    <div class="fmt"><button type="button" data-fmt="bold">B</button><button type="button" data-fmt="italic"><i>I</i></button><button type="button" data-fmt="insertUnorderedList">• List</button><button type="button" data-fmt="insertOrderedList">1. List</button></div>
+    <div id="lsBody" contenteditable="true"></div>
+    <p class="hint">Replace every [bracketed] part. The reference number (HAC/L/YEAR/NNN) is assigned when you save.</p>
+    <label for="lsRepo">Private letters repository</label><input type="text" id="lsRepo" value="humanai-letters">
+    <div class="box"><h4>Saved letters</h4><div class="list" id="lsList"></div></div>
+  </div>
+  <iframe id="lsPreview" title="Letter preview"></iframe>
+</section>
+
+<div id="toast"></div>
+
+<script src="vendor/html2pdf.bundle.min.js" defer></script>
+<script src="admin.js"></script>
+<script src="letters.js"></script>
+<script src="enquiries.js"></script>
+</body>
+</html>
