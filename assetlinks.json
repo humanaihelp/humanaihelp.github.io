@@ -1,8 +1,0 @@
-[{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "io.github.humanaihelp.app",
-        "sha256_cert_fingerprints": ["37:58:02:84:00:B8:C7:B1:E1:AF:23:26:86:27:8C:69:88:5C:3B:76:5E:91:06:C9:96:B9:9B:D9:B1:EA:2D:BC"]
-      }
-    }]
