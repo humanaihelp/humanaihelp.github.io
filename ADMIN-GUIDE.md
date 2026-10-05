@@ -66,24 +66,33 @@ Today the address is **humanaihelp.github.io** (it comes from the organisation n
 
 ---
 
-## 3. Create your admin key (GitHub token)
+## 3. Signing in and going live (no GitHub key)
 
-The admin page needs a key to save changes to GitHub. You do this **once a year** (tokens expire).
+The admin page uses **no GitHub key**. It can only change files on your own computer. Going live always happens in **VS Code**, with your own GitHub sign-in.
 
-1. GitHub → profile picture → *Settings* → *Developer settings* (bottom left) → *Personal access tokens* → **Fine-grained tokens** → *Generate new token*.
-2. Token name: `Website admin`. Expiration: *1 year* (put a reminder in your calendar).
-3. Resource owner: **humanaihelp**. Repository access: *Only select repositories* → **humanaihelp.github.io** and **humanai-letters** (create it first — see section 4a).
-4. Permissions → Repository permissions → **Contents: Read and write**. (Nothing else.)
-5. *Generate token* and **copy it** (starts with `github_pat_`). Store it in your password manager (e.g. Bitwarden). You won't see it again.
+**One-time setup (computer):**
+- Clone the repository in VS Code (*Source Control → Clone Repository → humanaihelp/humanaihelp.github.io*) into `HumanAI\humanaihelp.github.io`.
+- Sign in to GitHub in VS Code when it asks.
 
-**Safety:** anyone with this token can change the website. Never share it, never send it on WhatsApp/email. If it leaks, delete it in the same settings page and create a new one.
-If the organisation asks for approval of the token, approve it under *Organization settings → Personal access tokens → Pending requests*.
+**Every time:**
+1. Open **https://humanaihelp.github.io/admin/** in Chrome or Edge on the computer. Enter your **mobile number** (admin list: 94492 30088, 96202 16059, 78921 99834).
+2. Edit the pages.
+3. Click **Save changes → Save into my website folder**. The first time, choose the `humanaihelp.github.io` folder. Chrome remembers it and only asks to *Allow* again later.
+4. In VS Code: **Source Control** → check the changed files → type a short message → **Commit** → **Sync Changes / Push**. The live site updates in about 1 minute.
+
+**On a phone** (no folder access), *Save changes* downloads a zip. Unzip it into the repo folder on the computer later, then commit and push.
+
+**Important:** the admin page loads pages from the *live* site. Always **push** your VS Code commits before starting a new admin session. Otherwise you'd be editing an older version.
+
+**About the mobile number:** it is a front door, not a lock. Numbers are stored as scrambled codes (hashes). Nobody can change the live site without pushing from a GitHub account that has access to the organisation. To add or remove a number, ask Claude to update `ADMIN_PHONE_HASHES` in `admin/admin.js`.
+
+**If you created a GitHub token earlier:** it's no longer needed. Delete it in GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens → *Website admin* → **Delete**.
 
 ---
 
 ## 4. Using the admin page
 
-Open **https://humanaihelp.github.io/admin/**, paste your token, click **Sign in & edit**. Tick *Remember on this device* only on your own computer.
+Open **https://humanaihelp.github.io/admin/** and enter your mobile number (section 3).
 
 | I want to… | Do this |
 |---|---|
@@ -102,33 +111,28 @@ Open **https://humanaihelp.github.io/admin/**, paste your token, click **Sign in
 | Create a new page | *Pages* tab → *Create a new page* → then add a menu link (select a menu item → Duplicate → edit text & link) |
 | Write an official letter / PDF | **Letters** tab → **Open Letter Studio** (section 4a) |
 | See who contacted you (form + WhatsApp) | **Enquiries** tab (section 9) |
-| Make changes live | **Publish** → short note → **Publish now**. Live in ~1 minute. |
+| Make changes live | **Save changes** → **Save into my website folder** → VS Code **Commit** → **Push**. Live in ~1 minute. |
 | Undo everything not yet published | **Discard changes** |
 
 Unpublished changes are saved on your computer automatically as a draft.
-**Edit offline** mode lets you edit without a token and download the changed files as a zip (upload them on GitHub manually).
 
-**Adding your GSTIN:** *Site settings* → GSTIN → *Apply to all pages* → *Publish*. It then appears in the footer of every page.
+**Adding your GSTIN:** *Site settings* → GSTIN → *Apply to all pages* → *Save changes* → commit & push. It then appears in the footer of every page.
 
 ### 4a. Letter Studio — official letters as PDF
 
 Admin → **Letters** tab → **Open Letter Studio**.
 
-**One-time setup (private letters register):**
-1. GitHub → organisation **humanaihelp** → *Repositories* → *New repository*.
-2. Name: **`humanai-letters`** · choose **Private** · tick **Add a README file** → *Create repository*.
-3. Make sure your admin token includes this repository (section 3, step 3). If you already made the token, edit it: *Settings → Developer settings → Fine-grained tokens → Website admin → Repository access → add humanai-letters*.
+**Where letters go:** each saved letter is added to the register in this browser (on this computer) and downloaded as a PDF. File the PDFs in `HumanAI\HumanAI-Documents\Letters`. Use the same computer and browser for letters so the reference numbers continue (HAC/L/2026/001, 002 …).
 
 **Writing a letter:**
 1. Pick a template (Blank, Appreciation/contribution, Service confirmation, Payment acknowledgement, To whom it may concern) → **Use template**.
 2. Fill *To*, *Subject*, and edit the text — replace every [bracketed] part. Choose who signs.
 3. The preview on the right shows the official letterhead: logo, business name, proprietor, **GSTIN**, phone, email and website.
-4. **Save letter** → gets the next reference number (e.g. `HAC/L/2026/001`) and stores the PDF + an editable copy in the private repository. The *Saved letters* list shows all letters with **Open**, **PDF** and **Copy as new**.
+4. **Save letter** → gets the next reference number (e.g. `HAC/L/2026/001`), keeps an editable copy in this browser's register and downloads the PDF. The *Saved letters* list shows all letters with **Open**, **PDF** and **Copy as new**.
 5. **Download PDF** saves to your computer; **Print** opens the print window (choose your printer, or *Save as PDF*).
 6. Sign by hand (or add a scanned signature if you wish) before sending official letters.
 
-Offline mode (no token): letters are kept only in this browser and the PDF is downloaded — keep your own copies.
-Letters contain personal information — never save them in the public website repository.
+Letters contain personal information — never put them in the website repository folder.
 
 ---
 
@@ -201,7 +205,7 @@ One free **Cloudflare Worker** powers three things: real AI answers in the websi
    - `ADMIN_KEY` (Secret) = a long password you make up (save it in Bitwarden)
    - `BOT_MODE` (Text) = `after_hours`
 7. Copy the worker's address (like `https://humanai-bot.<name>.workers.dev`).
-8. Admin page → *Site settings* → **Chatbot & enquiry service address** → paste → *Apply to all pages* → *Publish*.
+8. Admin page → *Site settings* → **Chatbot & enquiry service address** → paste → *Apply to all pages* → *Save changes* → commit & push.
 9. Test: open the website, ask the bubble a question (AI answer), then send the contact form. Admin → **Enquiries** → enter your `ADMIN_KEY` → *Load enquiries* — your test appears. Update status (New → Contacted → Quoted → Won → Closed), WhatsApp/call back, export CSV.
 
 ### 9b. WhatsApp AI bot on 94492 30088 (optional, free, ~1–2 hours, done by Muttu)
@@ -225,7 +229,7 @@ How it works: messages arrive from Meta → the worker logs them in *Enquiries* 
 | Weekly | Answer WhatsApp messages; check website contact form messages arrive |
 | Monthly | Review pages for outdated info; add a real client story (with written permission) |
 | Every 3 months | Review the chat assistant answers; test every button on a phone |
-| Yearly | Renew the GitHub token; review privacy/terms/disclaimer with a professional; rebuild the Play Store app if Google raises the target API |
+| Yearly | Review privacy/terms/disclaimer with a professional; rebuild the Play Store app if Google raises the target API |
 
 ---
 

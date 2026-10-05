@@ -27,29 +27,11 @@
   function replaceAll(str, a, b) { return a ? str.split(a).join(b) : str; }
   function draftKey(p) { return "hac-draft:" + S.owner + "/" + S.repo + ":" + p; }
 
-  /* ---------------- GitHub API ---------------- */
-  function gh(method, path, body, accept) {
-    return fetch("https://api.github.com/repos/" + S.owner + "/" + S.repo + path, {
-      method: method,
-      headers: { "Authorization": "Bearer " + S.token, "Accept": accept || "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28", "Content-Type": "application/json" },
-      body: body ? JSON.stringify(body) : undefined
-    }).then(function (r) {
-      if (!r.ok) return r.text().then(function (t) { throw new Error(r.status + " " + t.slice(0, 200)); });
-      return accept && accept.indexOf("raw") !== -1 ? r.text() : r.json();
-    });
-  }
   function readFile(path) {
-    if (S.mode === "local") return fetch(SITE_ROOT + path, { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(path + " " + r.status); return r.text(); });
-    return gh("GET", "/contents/" + encodeURI(path) + "?ref=" + encodeURIComponent(S.branch), null, "application/vnd.github.raw+json");
+    return fetch(SITE_ROOT + path, { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(path + " " + r.status); return r.text(); });
   }
-  function listPages() {
-    if (S.mode === "local") return Promise.resolve(KNOWN_PAGES.slice());
-    return gh("GET", "/git/trees/" + encodeURIComponent(S.branch) + "?recursive=1").then(function (t) {
-      var htmls = t.tree.filter(function (x) { return x.type === "blob" && /^[^/]+\.html$/.test(x.path); }).map(function (x) { return x.path; });
-      htmls.sort(function (a, b) { var ia = KNOWN_PAGES.indexOf(a), ib = KNOWN_PAGES.indexOf(b); return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib) || a.localeCompare(b); });
-      return htmls;
-    });
-  }
+  function listPages() { return Promise.resolve(KNOWN_PAGES.slice()); }
+
 
   /* ---------------- file state ---------------- */
   function ensureFile(path) {
@@ -71,7 +53,7 @@
   function updateChanged() {
     var c = changedPaths();
     $("#changedInfo").textContent = c.length ? c.length + " file" + (c.length > 1 ? "s" : "") + " with unpublished changes" : "No unpublished changes";
-    $("#btnPublish").textContent = S.mode === "local" ? "Download changes" : "Publish";
+    $("#btnPublish").textContent = "Save changes";
     renderPageList();
   }
 
@@ -379,8 +361,9 @@
       if (n) toast("Header/footer copied to " + n + " other page" + (n > 1 ? "s" : ""));
       var c = changedPaths();
       if (!c.length) return toast("Nothing to publish yet");
-      $("#pubList").innerHTML = "<b>" + c.length + " file(s) will be " + (S.mode === "local" ? "downloaded" : "published") + ":</b><br>" + c.map(esc).join("<br>");
-      $("#pubGo").textContent = S.mode === "local" ? "Download zip" : "Publish now";
+      $("#pubList").innerHTML = "<b>" + c.length + " file(s) will be saved:</b><br>" + c.map(esc).join("<br>");
+      $("#pubGo").textContent = window.showDirectoryPicker ? "Save into my website folder" : "Download zip";
+      $("#pubZip").hidden = !window.showDirectoryPicker;
       $("#pubStatus").textContent = ""; $("#pubModal").classList.add("on");
     });
   };
@@ -390,32 +373,52 @@
     bumpSW().then(function () {
       var paths = changedPaths().concat(S.files["sw.js"] && S.files["sw.js"].current !== S.files["sw.js"].original ? ["sw.js"] : []);
       paths = paths.filter(function (p, i) { return paths.indexOf(p) === i; });
-      if (S.mode === "local") { downloadZip(paths); return finish(paths); }
-      $("#pubStatus").textContent = "Publishing…";
-      var ref, baseTree;
-      return gh("GET", "/git/ref/heads/" + encodeURIComponent(S.branch)).then(function (r) { ref = r.object.sha; return gh("GET", "/git/commits/" + ref); })
-        .then(function (c) {
-          baseTree = c.tree.sha;
-          return Promise.all(paths.map(function (p) {
-            var f = S.files[p];
-            if (f.binary) return gh("POST", "/git/blobs", { content: f.binary, encoding: "base64" }).then(function (b) { return { path: p, mode: "100644", type: "blob", sha: b.sha }; });
-            return { path: p, mode: "100644", type: "blob", content: f.current };
-          }));
-        })
-        .then(function (entries) { return gh("POST", "/git/trees", { base_tree: baseTree, tree: entries }); })
-        .then(function (t) { return gh("POST", "/git/commits", { message: $("#pubMsg").value || "Website update", tree: t.sha, parents: [ref] }); })
-        .then(function (c) { return gh("PATCH", "/git/refs/heads/" + encodeURIComponent(S.branch), { sha: c.sha }); })
-        .then(function () { finish(paths); });
-    }).catch(function (e) { $("#pubStatus").textContent = "Publishing failed: " + e.message + ". Your changes are still saved as a draft on this computer."; })
-      .then(function () { btn.disabled = false; });
+      if (!btn.dataset.zip && window.showDirectoryPicker) return saveToFolder(paths).then(function (n) { finish(paths, "folder"); });
+      downloadZip(paths); return finish(paths, "zip");
+    }).catch(function (e) { $("#pubStatus").textContent = "Saving failed: " + (e.name === "AbortError" ? "no folder chosen" : e.message) + ". Your changes are still saved as a draft on this computer."; })
+      .then(function () { btn.disabled = false; delete btn.dataset.zip; });
   };
-  function finish(paths) {
+  function finish(paths, how) {
     paths.forEach(function (p) { var f = S.files[p]; if (!f) return; if (f.binary) { delete S.files[p]; } else { f.original = f.current; f.isNew = false; } store(draftKey(p), null); });
     updateChanged();
-    $("#pubStatus").textContent = S.mode === "local" ? "Downloaded. Upload these files to your website host." : "Published! The live site updates in about 1 minute.";
-    setTimeout(function () { $("#pubModal").classList.remove("on"); }, 2200);
-    toast(S.mode === "local" ? "Zip downloaded" : "Published ✓", 3000);
+    $("#pubStatus").innerHTML = how === "folder" ? "Saved into your website folder ✓<br>Now in VS Code: <b>Source Control → Commit → Sync/Push</b>. Live about 1 minute later." : "Zip downloaded ✓ Unzip it into your VS Code repo folder (replace files), then Commit → Push.";
+    setTimeout(function () { $("#pubModal").classList.remove("on"); }, 6000);
+    toast(how === "folder" ? "Saved — commit & push in VS Code" : "Zip downloaded", 4000);
   }
+
+  /* ---------------- save straight into the local repo folder (Chrome/Edge on a computer) ---------------- */
+  function idb() { return new Promise(function (res, rej) { var r = indexedDB.open("hac-admin", 1); r.onupgradeneeded = function () { r.result.createObjectStore("kv"); }; r.onsuccess = function () { res(r.result); }; r.onerror = function () { rej(r.error); }; }); }
+  function idbGet(k) { return idb().then(function (db) { return new Promise(function (res) { var q = db.transaction("kv").objectStore("kv").get(k); q.onsuccess = function () { res(q.result || null); }; q.onerror = function () { res(null); }; }); }).catch(function () { return null; }); }
+  function idbSet(k, v) { return idb().then(function (db) { return new Promise(function (res) { var t = db.transaction("kv", "readwrite"); t.objectStore("kv").put(v, k); t.oncomplete = res; t.onerror = res; }); }).catch(function () {}); }
+  function pickRepo() {
+    return window.showDirectoryPicker({ id: "hac-repo", mode: "readwrite" }).then(function (h) {
+      return h.getFileHandle("index.html").then(function () { return h.getDirectoryHandle("admin"); }).then(function () { idbSet("repoDir", h); return h; },
+        function () { throw new Error("that folder isn't the website folder — choose the humanaihelp.github.io folder (it contains index.html and admin)"); });
+    });
+  }
+  function repoDir() {
+    return idbGet("repoDir").then(function (h) {
+      if (!h) return pickRepo();
+      return h.requestPermission({ mode: "readwrite" }).then(function (p) { return p === "granted" ? h : pickRepo(); }, pickRepo);
+    });
+  }
+  function saveToFolder(paths) {
+    $("#pubStatus").textContent = "Saving…";
+    var enc = new TextEncoder();
+    return repoDir().then(function (root) {
+      return paths.reduce(function (chain, p) {
+        return chain.then(function () {
+          var f = S.files[p], parts = p.split("/"), name = parts.pop();
+          var data = f.binary ? Uint8Array.from(atob(f.binary), function (ch) { return ch.charCodeAt(0); }) : enc.encode(f.current);
+          return parts.reduce(function (d, part) { return d.then(function (dir) { return dir.getDirectoryHandle(part, { create: true }); }); }, Promise.resolve(root))
+            .then(function (dir) { return dir.getFileHandle(name, { create: true }); })
+            .then(function (fh) { return fh.createWritable(); })
+            .then(function (w) { return w.write(data).then(function () { return w.close(); }); });
+        });
+      }, Promise.resolve()).then(function () { return paths.length; });
+    });
+  }
+  $("#pubZip").onclick = function () { $("#pubGo").dataset.zip = "1"; $("#pubGo").click(); };
 
   /* minimal ZIP writer (store, no compression) */
   var CRC = (function () { var t = [], c, n, k; for (n = 0; n < 256; n++) { c = n; for (k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
@@ -447,33 +450,41 @@
     S.settings = null; fillSettings(); updateChanged(); openPage(S.pages.indexOf(S.page) !== -1 ? S.page : "index.html", true);
   };
   $("#btnView").onclick = function () { window.open(SITE_ROOT, "_blank", "noopener"); };
-  $("#btnLogout").onclick = function () { if (changedPaths().length && !confirm("You have unpublished changes (they stay saved as a draft on this computer). Sign out?")) return; store("hac-admin", null); location.reload(); };
+  $("#btnLogout").onclick = function () { if (changedPaths().length && !confirm("You have unpublished changes (they stay saved as a draft on this computer). Sign out?")) return; location.reload(); };
   function switchTab(id) { $$(".tabs button").forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-pane") === id); }); $$(".pane").forEach(function (p) { p.classList.toggle("on", p.id === id); }); }
   $$(".tabs button").forEach(function (b) { b.onclick = function () { switchTab(b.getAttribute("data-pane")); if (b.getAttribute("data-pane") === "pSite") { fillSettings(); fillAssistant(); } }; });
   $$(".stage-bar [data-w]").forEach(function (b) { b.onclick = function () { frame.style.maxWidth = b.getAttribute("data-w"); }; });
   window.addEventListener("beforeunload", function (e) { syncNow(); });
 
   /* ---------------- start ---------------- */
-  function start(mode) {
-    S.mode = mode; S.owner = $("#owner").value.trim(); S.repo = $("#repo").value.trim(); S.branch = $("#branch").value.trim() || "main"; S.token = $("#token").value.trim();
-    if (mode === "github" && !S.token) { $("#loginMsg").textContent = "Paste your GitHub access token first (or use Edit offline)."; return; }
+  function start() {
+    S.mode = "local"; S.token = ""; S.owner = "humanaihelp"; S.repo = "humanaihelp.github.io"; S.branch = "main";
     $("#loginMsg").textContent = "Loading…";
-    var check = mode === "github" ? gh("GET", "") : Promise.resolve({ permissions: { push: true } });
-    check.then(function (info) {
-      if (mode === "github" && info.permissions && !info.permissions.push) throw new Error("This token can read but not write to the repository.");
-      if (mode === "github" && $("#remember").checked) store("hac-admin", JSON.stringify({ owner: S.owner, repo: S.repo, branch: S.branch, token: S.token }));
-      return listPages();
-    }).then(function (pages) {
+    listPages().then(function (pages) {
       S.pages = pages;
       $("#login").style.display = "none"; $("#app").style.display = "grid";
-      $("#modeBadge").textContent = mode === "local" ? "Offline mode" : S.owner + "/" + S.repo; $("#modeBadge").classList.toggle("local", mode === "local");
+      $("#modeBadge").textContent = "Signed in with mobile"; $("#modeBadge").classList.add("local");
       updateChanged(); return openPage(pages.indexOf("index.html") !== -1 ? "index.html" : pages[0]);
-    }).catch(function (e) { $("#loginMsg").textContent = "Could not sign in: " + e.message; });
+    }).catch(function (e) { $("#loginMsg").textContent = "Could not open the editor: " + e.message; });
   }
   window.HAC = { auth: function () { return { mode: S.mode, owner: S.owner, repo: S.repo, branch: S.branch, token: S.token }; } };
   document.getElementById("openStudio").onclick = function () { window.HACLetters && window.HACLetters.open(); };
-  $("#btnLogin").onclick = function () { start("github"); };
-  $("#btnLocal").onclick = function () { start("local"); };
-  var saved = load("hac-admin");
-  if (saved) { try { var s = JSON.parse(saved); $("#owner").value = s.owner; $("#repo").value = s.repo; $("#branch").value = s.branch; $("#token").value = s.token; $("#remember").checked = true; } catch (e) { /* ignore */ } }
+  /* ---------------- mobile-number front door ----------------
+     The listed numbers open the editor. This page holds no GitHub key: it can only write files on
+     the user's own computer (or download a zip); going live is a commit + push in VS Code.
+     Numbers are stored as hashes so they are not readable in the public code.
+     To add/remove a number: change ADMIN_PHONE_HASHES (ask Claude, or see ADMIN-GUIDE section 3a). */
+  var ADMIN_PHONE_HASHES = ["a29bb7c1cdb40b66e5657c557c5d5b6035c8f6f0ac2f2224d0c3c51f3c3f372a", "39548cc43a02e847a3fd959a7ac0d776037a2d29c59a32b4fbe00486cbe0fb7e", "51b996ff0c8a545db64b09db997baadfab02ff341165daad11c54126c0574367"];
+  function sha256hex(t) { return crypto.subtle.digest("SHA-256", new TextEncoder().encode(t)).then(function (b) { return Array.from(new Uint8Array(b)).map(function (x) { return x.toString(16).padStart(2, "0"); }).join(""); }); }
+  function phoneOk(raw) { var d = String(raw || "").replace(/\D/g, "").slice(-10); if (d.length !== 10) return Promise.resolve(false); return sha256hex("hac-admin:" + d).then(function (h) { return ADMIN_PHONE_HASHES.indexOf(h) !== -1; }); }
+  function phoneContinue() {
+    var v = $("#adminPhone").value; $("#phoneMsg").textContent = "Checking…";
+    phoneOk(v).then(function (ok) {
+      if (!ok) { $("#phoneMsg").textContent = "This number is not on the admin list."; return; }
+      $("#phoneMsg").textContent = "Welcome — opening the editor…"; start();
+    });
+  }
+  $("#btnPhone").onclick = phoneContinue;
+  $("#adminPhone").addEventListener("keydown", function (e) { if (e.key === "Enter") phoneContinue(); });
+  store("hac-admin", null); /* GitHub keys are no longer used: remove any key remembered by an older version */
 })();

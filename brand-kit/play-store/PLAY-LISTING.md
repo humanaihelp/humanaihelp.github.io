@@ -1,6 +1,6 @@
 # Google Play listing — copy & paste
 
-Account: **gouda.orders@gmail.com** · Package: **io.github.humanaihelp.app** · Upload file: `HumanAI Concierge Services.aab` (inside `HumanAI - Google Play package.zip`)
+Account: **h.s.biradar87@gmail.com** · Package: **io.github.humanaihelp.app** · Upload file: `HumanAI Concierge Services.aab` (inside `HumanAI - Google Play package.zip`)
 
 ## Create app
 - App name: **HumanAI Concierge Services**

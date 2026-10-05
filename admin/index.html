@@ -75,18 +75,11 @@ kbd{background:#f1f0f7;border:1px solid var(--line);border-radius:5px;padding:1p
   <div class="login-card">
     <img src="../assets/img/logo.svg" width="44" height="44" alt="">
     <h1>Website Admin</h1>
-    <p class="hint">Edit any text, link, image, colour or contact detail on the HumanAI Concierge website, then publish. Changes go live about 1 minute after publishing.</p>
-    <div class="row">
-      <div><label for="owner">GitHub account / organisation</label><input type="text" id="owner" value="humanaihelp"></div>
-      <div><label for="branch">Branch</label><input type="text" id="branch" value="main"></div>
-    </div>
-    <label for="repo">Repository</label><input type="text" id="repo" value="humanaihelp.github.io">
-    <label for="token">GitHub access token</label><input type="password" id="token" placeholder="github_pat_…" autocomplete="off">
-    <p class="hint">Create one at GitHub → Settings → Developer settings → Fine-grained tokens, with <b>Contents: Read and write</b> access to this repository only. See the Help tab or ADMIN-GUIDE for step-by-step instructions.</p>
-    <label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="remember"> Remember on this device (only on your own computer)</label>
-    <div class="acts" style="margin-top:16px">
-      <button class="btn primary" id="btnLogin">Sign in &amp; edit</button>
-      <button class="btn" id="btnLocal" title="Edit without signing in; download the changed files at the end">Edit offline (download files)</button>
+    <p class="hint">Edit any text, link, image, colour or contact detail on the HumanAI Concierge website, then <b>Save changes</b> into your website folder and commit them in VS Code. No GitHub key is used or stored here.</p>
+    <div id="phoneStep">
+      <label for="adminPhone">Your mobile number</label><input type="tel" id="adminPhone" inputmode="numeric" autocomplete="tel" placeholder="10-digit mobile number">
+      <div class="acts" style="margin-top:16px"><button class="btn primary" id="btnPhone">Continue</button></div>
+      <p class="hint" id="phoneMsg"></p>
     </div>
     <p class="hint" id="loginMsg"></p>
   </div>
@@ -101,7 +94,7 @@ kbd{background:#f1f0f7;border:1px solid var(--line);border-radius:5px;padding:1p
     <div class="grow"></div>
     <span class="hint" id="changedInfo">No unpublished changes</span>
     <button class="btn" id="btnDiscard">Discard changes</button>
-    <button class="btn primary" id="btnPublish">Publish</button>
+    <button class="btn primary" id="btnPublish">Save changes</button>
     <button class="btn" id="btnView" title="Open the live website">View site ↗</button>
     <button class="btn" id="btnLogout">Sign out</button>
   </div>
@@ -235,7 +228,7 @@ kbd{background:#f1f0f7;border:1px solid var(--line);border-radius:5px;padding:1p
       <div class="pane" id="pLetters">
         <p class="hint">Write letters on the official letterhead (logo, business name, GSTIN, contact details), then <b>download as PDF</b>, <b>print</b>, and <b>save</b> them to a register.</p>
         <div class="acts"><button class="btn primary" id="openStudio">Open Letter Studio</button></div>
-        <div class="box"><h4>Where letters are saved</h4><p class="hint">Letters can contain personal information, so they are saved in a separate <b>private</b> GitHub repository (default name <b>humanai-letters</b>) — never on the public website. In offline mode they are saved only in this browser. See ADMIN-GUIDE section 4a.</p></div>
+        <div class="box"><h4>Where letters are saved</h4><p class="hint">Letters can contain personal information, so they are never saved on the public website. Each saved letter is kept in this browser's register and downloaded as a PDF — file the PDFs in <code>HumanAI-Documents\Letters</code>. See ADMIN-GUIDE section 4a.</p></div>
       </div>
 
       <div class="pane" id="pEnq">
@@ -254,19 +247,18 @@ kbd{background:#f1f0f7;border:1px solid var(--line);border-radius:5px;padding:1p
         <h3>Links and buttons</h3><p>Select a button or link; the <b>Link</b> box lets you change where it goes.</p>
         <h3>Photos</h3><p>Select the photo box (for example the team initials), choose an image file and press <b>Insert / replace image</b>.</p>
         <h3>Phone, email, GSTIN, colours, logo</h3><p>Use <b>Site settings</b> — one change updates every page.</p>
-        <h3>Publishing</h3><p>Press <b>Publish</b>. All changed files are saved to GitHub in one step and the live site updates in about a minute. Unpublished changes are kept on this computer as a draft.</p>
+        <h3>Saving &amp; going live</h3><p>Press <b>Save changes</b> → <b>Save into my website folder</b> and choose your VS Code repo folder (<code>humanaihelp.github.io</code>) the first time. The changed files are written straight into it. Then in VS Code: <b>Source Control</b> → type a message → <b>Commit</b> → <b>Sync / Push</b>. The live site updates about a minute later. On phones (or browsers without folder access) the changes download as a zip instead — unzip it into the repo folder. Unsaved changes are kept on this device as a draft.</p>
         <h3>Collapsible sections</h3><p>In the editor, all collapsible sections and tabs are shown open so you can edit them. On the live site they stay collapsible.</p>
-        <h3>Safety</h3><p>Your token is only sent to GitHub. Never share it. If you think it leaked, delete it in GitHub settings and create a new one.</p>
+        <h3>Safety</h3><p>This page holds no GitHub key — it can only change files on your own computer. Going live always happens through VS Code with your own GitHub sign-in.</p>
       </div>
     </aside>
   </div>
 </section>
 
 <div class="modal" id="pubModal"><div class="card">
-  <h3 style="margin-top:0">Publish changes</h3>
+  <h3 style="margin-top:0">Save changes</h3>
   <p class="hint" id="pubList"></p>
-  <label for="pubMsg">Short note about this change</label><input type="text" id="pubMsg" value="Website update">
-  <div class="acts" style="margin-top:16px"><button class="btn primary" id="pubGo">Publish now</button><button class="btn" id="pubCancel">Cancel</button></div>
+  <div class="acts" style="margin-top:16px"><button class="btn primary" id="pubGo">Save into my website folder</button><button class="btn" id="pubZip">Download zip instead</button><button class="btn" id="pubCancel">Cancel</button></div>
   <p class="hint" id="pubStatus"></p>
 </div></div>
 
