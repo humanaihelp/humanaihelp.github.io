@@ -15,3 +15,4 @@ Static website (HTML + CSS + vanilla JS, no build step) hosted free on GitHub Pa
 ## Notes
 - The repository must be public on GitHub's free plan — never upload client data, IDs or private documents here.
 - Legal pages are carefully prepared starting versions; have them reviewed by a qualified professional.
+
